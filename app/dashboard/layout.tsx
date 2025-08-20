@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -41,6 +40,7 @@ const navigation = [
   { name: "Alerts", href: "/dashboard/alerts", icon: Bell },
   { name: "Admin", href: "/dashboard/admin", icon: Shield },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
+  { name: "About", href: "/about", icon: User }, // Added About link
 ]
 
 export default function DashboardLayout({
