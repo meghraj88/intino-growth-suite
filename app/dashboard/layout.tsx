@@ -176,6 +176,4 @@ export default function DashboardLayout({
       </div>
     </div>
   )
-}<Link href="/about" className="text-gray-600 hover:text-gray-900">
-  About
-</Link>
+}
