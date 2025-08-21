@@ -19,7 +19,7 @@ import {
   Package,
   TrendingUp,
   Settings,
-  Sync,
+  RefreshCw,
   AlertCircle,
   CheckCircle
 } from "lucide-react"
@@ -176,7 +176,7 @@ export default function MobilePage() {
                 onClick={handleSync}
                 disabled={syncProgress > 0 && syncProgress < 100}
               >
-                <Sync className={`w-4 h-4 ${syncProgress > 0 && syncProgress < 100 ? 'animate-spin' : ''}`} />
+                <RefreshCw className={`w-4 h-4 ${syncProgress > 0 && syncProgress < 100 ? 'animate-spin' : ''}`} />
                 <span>
                   {syncProgress > 0 && syncProgress < 100 ? 'Syncing...' : 'Sync All Data'}
                 </span>
