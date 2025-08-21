@@ -36,7 +36,7 @@ import {
   Smartphone,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { createClient } from "@/utils/supabase/client" // Import supabase client
+import { createClient } from "@/lib/supabase/client" // Import supabase client
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
