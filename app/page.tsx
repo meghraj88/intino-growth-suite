@@ -1,7 +1,7 @@
-// app/page.tsx
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge, MapPin } from "@/components/ui/badge"
+import { Badge } from "@/components/ui/badge"
 import {
   Zap,
   TrendingUp,
@@ -9,8 +9,10 @@ import {
   ArrowRight,
   Shield,
   Globe,
-} from "lucide-react" // Ensure these imports are correct and exist.
+  MapPin,
+} from "lucide-react"
 import Link from "next/link"
+
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -44,10 +46,13 @@ export default function LandingPage() {
           </div>
         </div>
       </header>
+
       {/* Hero Section */}
       <section className="py-20 px-4">
         <div className="container mx-auto text-center max-w-4xl">
-          <Badge className="mb-4 bg-blue-100 text-blue-800 hover:bg-blue-100">Unified Dropship Growth Suite</Badge>
+          <Badge className="mb-4 bg-blue-100 text-blue-800 hover:bg-blue-100">
+            Unified Dropship Growth Suite
+          </Badge>
           <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
             Automate Your Dropshipping Success with AI-Powered Optimization
           </h1>
@@ -69,10 +74,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
       {/* Features Section */}
       <section id="features" className="py-20 px-4 bg-white">
-       {/* Your features content goes here */}
-      </section>
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Three Powerful Tools, One Platform</h2>
@@ -144,7 +148,6 @@ export default function LandingPage() {
       {/* Benefits Section */}
       <section className="py-20 px-4 bg-gray-50">
         <div className="container mx-auto max-w-4xl text-center">
-          {/* Add more content or components here as needed */}
           <h2 className="text-3xl font-bold text-gray-900 mb-12">Why Choose Intino?</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="flex flex-col items-center">
@@ -181,7 +184,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-          {/* Footer */}
+      {/* Footer */}
       <footer className="bg-gray-900 text-white py-12 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-4 gap-8">
@@ -207,8 +210,56 @@ export default function LandingPage() {
                     Pricing
                   </Link>
                 </li>
+                <li>
+                  <Link href="/docs" className="hover:text-white">
+                    Documentation
+                  </Link>
+                </li>
               </ul>
             </div>
+            <div>
+              <h4 className="font-semibold mb-4">Company</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li>
+                  <Link href="/about" className="hover:text-white">
+                    About
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/contact" className="hover:text-white">
+                    Contact
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/blog" className="hover:text-white">
+                    Blog
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Support</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li>
+                  <Link href="/help" className="hover:text-white">
+                    Help Center
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/privacy" className="hover:text-white">
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms" className="hover:text-white">
+                    Terms of Service
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-gray-800 pt-8 mt-8 text-center text-gray-400">
+            <p>&copy; 2024 Intino. All rights reserved.</p>
           </div>
         </div>
       </footer>
