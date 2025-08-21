@@ -208,9 +208,14 @@ export default function AnalyticsPage() {
 
         <TabsContent value="products" className="space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle>Top Performing Products</CardTitle>
-              <CardDescription>Best products by orders, revenue, and margin</CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle>Top Performing Products</CardTitle>
+                <CardDescription>Best products by orders, revenue, and margin</CardDescription>
+              </div>
+              <Button variant="outline" size="sm">
+                View All Products
+              </Button>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -274,9 +279,14 @@ export default function AnalyticsPage() {
             </Card>
 
             <Card>
-              <CardHeader>
-                <CardTitle>Category Performance</CardTitle>
-                <CardDescription>Detailed metrics by category</CardDescription>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle>Category Performance</CardTitle>
+                  <CardDescription>Detailed metrics by category</CardDescription>
+                </div>
+                <Button variant="outline" size="sm">
+                  View All Categories
+                </Button>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
