@@ -32,6 +32,8 @@ import {
   Moon, // Import Moon icon for dark mode
   Store,
   Brain,
+  MessageCircle,
+  Smartphone,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -46,6 +48,9 @@ const navigation = [
   { name: "Trends", href: "/dashboard/trends", icon: TrendingUp },
   { name: "Analytics", href: "/dashboard/analytics", icon: TrendingUp },
   { name: "AI Assistant", href: "/dashboard/ai", icon: Brain },
+  { name: "Communication", href: "/dashboard/communication", icon: MessageCircle },
+  { name: "Mobile App", href: "/mobile", icon: Smartphone },
+  { name: "Technical", href: "/dashboard/technical", icon: Settings },
   { name: "Alerts", href: "/dashboard/alerts", icon: Bell },
   { name: "Admin", href: "/dashboard/admin", icon: Shield },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
