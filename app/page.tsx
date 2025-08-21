@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -51,7 +50,9 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="py-20 px-4">
+      <section className="relative overflow-hidden gradient-bg px-4 py-20">
+        <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] dark:bg-grid-slate-700/25" />
+        <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 to-transparent" />
         <div className="container mx-auto text-center max-w-4xl">
           <Badge className="mb-4 bg-blue-100 text-blue-800 hover:bg-blue-100">
             Unified Dropship Growth Suite
