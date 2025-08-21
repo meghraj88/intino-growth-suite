@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { TrendingUp, TrendingDown, DollarSign, Package, ShoppingCart, AlertTriangle, ArrowUpRight } from "lucide-react"
 import Link from "next/link"
+import { Toaster } from "@/components/ui/toaster"
 
 export default function DashboardPage() {
   return (
@@ -226,6 +227,7 @@ export default function DashboardPage() {
           </div>
         </CardContent>
       </Card>
+      <Toaster />
     </div>
   )
 }

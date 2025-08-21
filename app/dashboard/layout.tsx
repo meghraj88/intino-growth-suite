@@ -36,9 +36,11 @@ import { cn } from "@/lib/utils"
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Products", href: "/dashboard/products", icon: Package },
+  { name: "Suppliers", href: "/dashboard/suppliers", icon: Package },
   { name: "Orders", href: "/dashboard/orders", icon: ShoppingCart },
   { name: "Returns", href: "/dashboard/returns", icon: RefreshCw },
   { name: "Trends", href: "/dashboard/trends", icon: TrendingUp },
+  { name: "Analytics", href: "/dashboard/analytics", icon: TrendingUp },
   { name: "Alerts", href: "/dashboard/alerts", icon: Bell },
   { name: "Admin", href: "/dashboard/admin", icon: Shield },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
