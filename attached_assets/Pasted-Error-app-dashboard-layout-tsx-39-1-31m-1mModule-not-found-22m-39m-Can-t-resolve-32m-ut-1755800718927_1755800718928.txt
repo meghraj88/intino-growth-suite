@@ -1,0 +1,24 @@
+Error: ./app/dashboard/layout.tsx:39:1
+[31m[1mModule not found[22m[39m: Can't resolve '[32m@/utils/supabase/client[39m'
+[0m [90m 37 |[39m } [36mfrom[39m [32m"lucide-react"[39m[0m
+[0m [90m 38 |[39m [36mimport[39m { cn } [36mfrom[39m [32m"@/lib/utils"[39m[0m
+[0m[31m[1m>[22m[39m[90m 39 |[39m [36mimport[39m { createClient } [36mfrom[39m [32m"@/utils/supabase/client"[39m [90m// Import supabase client[39m[0m
+[0m [90m    |[39m [31m[1m^[22m[39m[0m
+[0m [90m 40 |[39m[0m
+[0m [90m 41 |[39m [36mconst[39m navigation [33m=[39m [[0m
+[0m [90m 42 |[39m   { name[33m:[39m [32m"Dashboard"[39m[33m,[39m href[33m:[39m [32m"/dashboard"[39m[33m,[39m icon[33m:[39m [33mLayoutDashboard[39m }[33m,[39m[0m
+
+https://nextjs.org/docs/messages/module-not-found
+    at BuildError (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/react-dev-overlay/ui/container/build-error.js:43:41)
+    at react-stack-bottom-frame (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:23950:20)
+    at renderWithHooksAgain (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:5179:20)
+    at renderWithHooks (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:5091:22)
+    at updateFunctionComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:8328:19)
+    at beginWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:9945:18)
+    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:1511:30)
+    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15120:22)
+    at workLoopSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:14944:41)
+    at renderRootSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:14924:11)
+    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:14411:13)
+    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16275:7)
+    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)
