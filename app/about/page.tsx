@@ -1,10 +1,15 @@
 
 
+import Head from 'next/head';
 import Link from "next/link";
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <Head>
+        <title>About Us - Intino</title>
+        <meta name="description" content="Learn about Intino, the Unified Dropship Growth Suite." />
+      </Head>
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">About Intino</h1>
@@ -31,6 +36,11 @@ export default function AboutPage() {
               <li>• AI-powered pricing suggestions</li>
               <li>• WhatsApp integration</li>
             </ul>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl font-semibold mb-4 text-red-600">Our Team</h2>
+            <p className="text-gray-700">Meet the passionate team behind Intino, dedicated to revolutionizing dropshipping.</p>
           </div>
         </div>
 

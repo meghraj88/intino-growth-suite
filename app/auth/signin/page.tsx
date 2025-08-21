@@ -24,6 +24,12 @@ export default function SignInPage() {
     setLoading(true)
     setError("")
 
+    if (!email || !password) {
+      setError("Both email and password are required.")
+      setLoading(false)
+      return
+    }
+
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -104,4 +110,4 @@ export default function SignInPage() {
       </Card>
     </div>
   )
-}
+    }

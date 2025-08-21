@@ -19,18 +19,14 @@ deploymentTarget = "cloudrun"
 localPort = 3000
 externalPort = 80
 
-[[ports]]
-localPort = 3001
-externalPort = 3001
+[workflows]
+runButton = "Development Server"
 
-[[ports]]
-localPort = 3002
-externalPort = 3002
+[[workflows.workflow]]
+name = "Development Server"
+author = 42300581
+mode = "sequential"
 
-[[ports]]
-localPort = 3003
-externalPort = 3003
-
-[[ports]]
-localPort = 3004
-externalPort = 3000
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
