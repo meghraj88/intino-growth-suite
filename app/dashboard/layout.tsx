@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react" // Import useEffect for theme handling
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation" // Import useRouter
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -36,6 +36,7 @@ import {
   Smartphone,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { createClient } from "@/utils/supabase/client" // Import supabase client
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -64,6 +65,9 @@ export default function DashboardLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
+  const supabase = createClient()
+
   const [theme, setTheme] = useState<'light' | 'dark'>('light'); // State for theme
 
   // Effect to check system preference and apply theme on mount
@@ -76,7 +80,7 @@ export default function DashboardLayout({
   // Check if user needs onboarding
   useEffect(() => {
     const hasCompletedOnboarding = localStorage.getItem('onboarding_completed');
-    
+
     // If user hasn't completed onboarding and is not already on onboarding page
     if (!hasCompletedOnboarding && !pathname.includes('/onboarding')) {
       window.location.href = '/dashboard/onboarding';
@@ -90,6 +94,13 @@ export default function DashboardLayout({
     document.documentElement.classList.toggle('dark');
     localStorage.setItem('theme', newTheme);
   };
+
+  // Logout handler
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    router.push("/auth/signin")
+    router.refresh()
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20 text-gray-900 dark:text-gray-100 pattern-bg">
@@ -117,8 +128,8 @@ export default function DashboardLayout({
                   href={item.href}
                   className={cn(
                     "flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-all duration-300 group relative overflow-hidden",
-                    isActive 
-                      ? "bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 dark:from-blue-900/50 dark:to-purple-900/50 dark:text-blue-300 shadow-md" 
+                    isActive
+                      ? "bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 dark:from-blue-900/50 dark:to-purple-900/50 dark:text-blue-300 shadow-md"
                       : "text-gray-600 hover:bg-white/60 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700/50 dark:hover:text-gray-100 interactive-hover",
                   )}
                   onClick={() => setSidebarOpen(false)}
@@ -189,15 +200,15 @@ export default function DashboardLayout({
             <div className="flex flex-1" />
             <div className="flex items-center gap-x-4 lg:gap-x-6">
               {/* Dark Mode Toggle */}
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={toggleTheme} 
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={toggleTheme}
                 aria-label="Toggle theme"
                 className="hover:bg-white/20 dark:hover:bg-gray-700/50 transition-all duration-300 hover:scale-110"
               >
-                {theme === 'light' ? 
-                  <Moon className="h-5 w-5 text-gray-600 dark:text-gray-300" /> : 
+                {theme === 'light' ?
+                  <Moon className="h-5 w-5 text-gray-600 dark:text-gray-300" /> :
                   <Sun className="h-5 w-5 text-yellow-500" />
                 }
               </Button>
@@ -228,7 +239,7 @@ export default function DashboardLayout({
                     <span>Settings</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                   </DropdownMenuItem>
