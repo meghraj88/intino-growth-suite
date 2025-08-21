@@ -31,12 +31,12 @@ export async function middleware(request: NextRequest) {
 
   // Redirect to signin if accessing dashboard without auth
   if (request.nextUrl.pathname.startsWith("/dashboard") && !user) {
-    return NextResponse.redirect(new URL("/auth/signin", request.url))
+    return NextResponse.redirect(new URL("/signin", request.url))
   }
 
   // Redirect to dashboard if accessing auth pages while authenticated
   if (
-    (request.nextUrl.pathname.startsWith("/auth/signin") || request.nextUrl.pathname.startsWith("/auth/signup")) &&
+    (request.nextUrl.pathname === "/signin" || request.nextUrl.pathname === "/signup") &&
     user
   ) {
     return NextResponse.redirect(new URL("/dashboard", request.url))
