@@ -58,13 +58,13 @@ export default function OnboardingPage() {
 
   const handleFinishOnboarding = () => {
     // Logic to save onboarding data and redirect
-    console.log("Onboarding finished:", formData);
+    console.log("Onboarding finished:", formData)
     
     // Set onboarding completion in localStorage
-    localStorage.setItem('onboarding_completed', 'true');
+    localStorage.setItem('onboarding_completed', 'true')
 
     // Redirect to the dashboard
-    window.location.href = '/dashboard';
+    window.location.href = '/dashboard'
   }
 
   const handleInputChange = (field: string, value: string) => {
