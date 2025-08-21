@@ -74,55 +74,71 @@ export default function OnboardingPage() {
   const currentStepData = steps[currentStep - 1]
 
   return (
-    <div className="max-w-2xl mx-auto space-y-8">
+    <div className="max-w-2xl mx-auto space-y-8 page-transition">
       {/* Header */}
       <div className="text-center">
-        <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
-          <Zap className="w-8 h-8 text-white" />
+        <div className="w-20 h-20 bg-gradient-to-br from-blue-600 via-purple-600 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 floating shadow-premium">
+          <Zap className="w-10 h-10 text-white" />
         </div>
-        <h1 className="text-3xl font-bold text-gray-900">Welcome to Intino!</h1>
-        <p className="text-gray-600 mt-2">Let's get your dropshipping automation set up in just a few steps.</p>
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4 max-w-md mx-auto">
-          <p className="text-sm text-blue-800">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">Welcome to Intino!</h1>
+        <p className="text-gray-600 dark:text-gray-300 mt-2 text-lg">Let's get your dropshipping automation set up in just a few steps.</p>
+        <div className="glass-card border border-blue-200/50 dark:border-blue-700/50 rounded-xl p-6 mt-6 max-w-md mx-auto shadow-premium">
+          <p className="text-sm text-blue-800 dark:text-blue-300">
             🚀 <strong>Quick Setup:</strong> Most users complete this in under 5 minutes and see their first automated price recommendations immediately!
           </p>
         </div>
       </div>
 
       {/* Progress */}
-      <div className="space-y-4">
+      <div className="space-y-6">
         <div className="flex items-center justify-between">
           {steps.map((step, index) => (
             <div key={step.id} className="flex items-center">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                  className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-500 shadow-lg ${
                     currentStep > step.id
-                      ? "bg-green-500 text-white"
+                      ? "bg-gradient-to-br from-green-500 to-emerald-500 text-white shadow-green-500/25"
                       : currentStep === step.id
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-200 text-gray-600"
+                        ? "bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-blue-500/25 animate-pulse"
+                        : "bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500"
                   }`}
                 >
-                  {currentStep > step.id ? <CheckCircle className="w-5 h-5" /> : <step.icon className="w-4 h-4" />}
+                  {currentStep > step.id ? <CheckCircle className="w-5 h-5" /> : <step.icon className="w-5 h-5" />}
                 </div>
-                <span className={`text-sm font-medium ${currentStep >= step.id ? "text-gray-900" : "text-gray-500"}`}>
+                <span className={`text-sm font-medium transition-colors duration-300 ${
+                  currentStep >= step.id 
+                    ? "text-gray-900 dark:text-gray-100" 
+                    : "text-gray-500 dark:text-gray-400"
+                }`}>
                   {step.name}
                 </span>
               </div>
-              {index < steps.length - 1 && <div className="w-12 h-px bg-gray-300 mx-4" />}
+              {index < steps.length - 1 && (
+                <div className={`w-12 h-0.5 mx-4 transition-colors duration-500 ${
+                  currentStep > step.id ? "bg-green-500" : "bg-gray-200 dark:bg-gray-700"
+                }`} />
+              )}
             </div>
           ))}
         </div>
-        <Progress value={progress} className="w-full" />
+        <div className="relative">
+          <Progress value={progress} className="w-full h-2" />
+          <div className="absolute top-0 left-0 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-500 shadow-lg" 
+               style={{ width: `${progress}%` }} />
+        </div>
       </div>
 
       {/* Step Content */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            {currentStepData.icon && <currentStepData.icon className="w-5 h-5" />}
-            <span>{currentStepData.name}</span>
+      <Card className="glass-card border-white/20 dark:border-gray-700/50 shadow-premium card-hover">
+        <CardHeader className="bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-blue-900/20 dark:to-purple-900/20 border-b border-white/20 dark:border-gray-700/50">
+          <CardTitle className="flex items-center space-x-3">
+            {currentStepData.icon && (
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                <currentStepData.icon className="w-5 h-5 text-white" />
+              </div>
+            )}
+            <span className="text-xl font-semibold">{currentStepData.name}</span>
           </CardTitle>
           <CardDescription>
             {currentStep === 1 && "Connect your Shopify or WooCommerce store to start syncing products"}
