@@ -30,21 +30,26 @@ import {
   Shield,
   Sun, // Import Sun icon for light mode
   Moon, // Import Moon icon for dark mode
+  Store,
+  Brain,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Products", href: "/dashboard/products", icon: Package },
+  { name: "Inventory", href: "/dashboard/inventory", icon: Package },
+  { name: "Stores", href: "/dashboard/stores", icon: Store },
   { name: "Suppliers", href: "/dashboard/suppliers", icon: Package },
   { name: "Orders", href: "/dashboard/orders", icon: ShoppingCart },
   { name: "Returns", href: "/dashboard/returns", icon: RefreshCw },
   { name: "Trends", href: "/dashboard/trends", icon: TrendingUp },
   { name: "Analytics", href: "/dashboard/analytics", icon: TrendingUp },
+  { name: "AI Assistant", href: "/dashboard/ai", icon: Brain },
   { name: "Alerts", href: "/dashboard/alerts", icon: Bell },
   { name: "Admin", href: "/dashboard/admin", icon: Shield },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
-  { name: "About", href: "/about", icon: User }, // Added About link
+  { name: "About", href: "/about", icon: User },
 ]
 
 export default function DashboardLayout({
