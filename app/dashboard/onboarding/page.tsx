@@ -55,6 +55,12 @@ export default function OnboardingPage() {
     }
   }
 
+  const handleFinishOnboarding = () => {
+    // Logic to save onboarding data and redirect
+    console.log("Onboarding finished:", formData);
+    // Typically redirect to dashboard or a success page
+  }
+
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
   }
@@ -287,24 +293,25 @@ export default function OnboardingPage() {
 
       {/* Navigation */}
       <div className="flex items-center justify-between">
-        <Button variant="outline" onClick={handlePrevious} disabled={currentStep === 1}>
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Previous
-        </Button>
-        <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-500">
-            Step {currentStep} of {steps.length}
-          </span>
+        <div className="flex space-x-3">
+          <Button variant="outline" onClick={handlePrevious} disabled={currentStep === 1}>
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Previous
+          </Button>
+          <Button variant="ghost" onClick={handleFinishOnboarding} className="text-gray-500">
+            Skip for now
+          </Button>
         </div>
-        {currentStep < steps.length ? (
-          <Button onClick={handleNext}>
-            Next
+        <div className="flex space-x-3"></div>
+        {currentStep === steps.length ? (
+          <Button onClick={handleFinishOnboarding} className="flex-1">
+            Complete Setup
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         ) : (
-          <Button className="bg-green-600 hover:bg-green-700">
-            Complete Setup
-            <CheckCircle className="w-4 h-4 ml-2" />
+          <Button onClick={handleNext} className="flex-1">
+            Next
+            <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         )}
       </div>

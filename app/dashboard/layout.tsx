@@ -61,6 +61,16 @@ export default function DashboardLayout({
     document.documentElement.classList.toggle('dark', userPreference === 'dark');
   }, []);
 
+  // Check if user needs onboarding
+  useEffect(() => {
+    const hasCompletedOnboarding = localStorage.getItem('onboarding_completed');
+    
+    // If user hasn't completed onboarding and is not already on onboarding page
+    if (!hasCompletedOnboarding && !pathname.includes('/onboarding')) {
+      window.location.href = '/dashboard/onboarding';
+    }
+  }, [pathname]);
+
   // Function to toggle theme
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';

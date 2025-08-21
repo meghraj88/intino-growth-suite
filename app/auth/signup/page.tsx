@@ -48,7 +48,8 @@ export default function SignUpPage() {
       } else if (data.user && !data.user.email_confirmed_at) {
         setSuccess("Check your email to confirm your account before signing in.")
       } else {
-        router.push("/dashboard")
+        // Redirect new users to onboarding
+        router.push("/dashboard/onboarding")
         router.refresh()
       }
     } catch (err) {
