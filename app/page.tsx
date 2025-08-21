@@ -32,6 +32,9 @@ export default function LandingPage() {
             <Link href="#pricing" className="text-gray-600 hover:text-gray-900">
               Pricing
             </Link>
+            <Link href="/faq" className="text-gray-600 hover:text-gray-900">
+              FAQ
+            </Link>
             <Link href="/docs" className="text-gray-600 hover:text-gray-900">
               Docs
             </Link>
@@ -71,6 +74,59 @@ export default function LandingPage() {
                 Watch Demo
               </Button>
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="py-20 px-4 bg-gradient-to-r from-gray-50 to-blue-50">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">How It Works</h2>
+            <p className="text-lg text-gray-600">
+              Get started with automated dropshipping in just 3 simple steps
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-2xl font-bold text-blue-600">1</span>
+              </div>
+              <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Globe className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Connect Your Store</h3>
+              <p className="text-gray-600">
+                Securely connect your Shopify or WooCommerce store in under 2 minutes. Your data stays safe with bank-level encryption.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-2xl font-bold text-green-600">2</span>
+              </div>
+              <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <RefreshCw className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Sync Products & Suppliers</h3>
+              <p className="text-gray-600">
+                Our AI automatically syncs your product catalog and monitors supplier prices in real-time across multiple platforms.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-2xl font-bold text-purple-600">3</span>
+              </div>
+              <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Get Smart Recommendations</h3>
+              <p className="text-gray-600">
+                Receive AI-powered pricing suggestions, trend alerts, and automated return processing to maximize your profits.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -169,6 +225,86 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <section className="py-20 px-4 bg-white">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">What Our Users Say</h2>
+            <p className="text-lg text-gray-600">
+              Join thousands of successful dropshippers who trust Intino
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  <img
+                    src="/placeholder-user.jpg"
+                    alt="Rahul Sharma"
+                    className="w-12 h-12 rounded-full mr-4"
+                  />
+                  <div>
+                    <h4 className="font-semibold">Rahul Sharma</h4>
+                    <p className="text-sm text-gray-600">Delhi, India</p>
+                  </div>
+                </div>
+                <p className="text-gray-700 mb-4">
+                  "Intino increased my profit margins by 35% in just 2 months. The automated pricing suggestions are spot-on!"
+                </p>
+                <div className="flex text-yellow-400">
+                  ★★★★★
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  <img
+                    src="/placeholder-user.jpg"
+                    alt="Sarah Johnson"
+                    className="w-12 h-12 rounded-full mr-4"
+                  />
+                  <div>
+                    <h4 className="font-semibold">Sarah Johnson</h4>
+                    <p className="text-sm text-gray-600">New York, USA</p>
+                  </div>
+                </div>
+                <p className="text-gray-700 mb-4">
+                  "The returns management feature saved me 10+ hours per week. My customers love the WhatsApp integration!"
+                </p>
+                <div className="flex text-yellow-400">
+                  ★★★★★
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-purple-50 to-violet-50 border-purple-200">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  <img
+                    src="/placeholder-user.jpg"
+                    alt="Ahmed Hassan"
+                    className="w-12 h-12 rounded-full mr-4"
+                  />
+                  <div>
+                    <h4 className="font-semibold">Ahmed Hassan</h4>
+                    <p className="text-sm text-gray-600">Dubai, UAE</p>
+                  </div>
+                </div>
+                <p className="text-gray-700 mb-4">
+                  "The trend scanner helped me discover viral products before my competitors. My sales doubled!"
+                </p>
+                <div className="flex text-yellow-400">
+                  ★★★★★
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 px-4 bg-blue-600">
         <div className="container mx-auto max-w-4xl text-center">
@@ -213,6 +349,16 @@ export default function LandingPage() {
                 <li>
                   <Link href="/docs" className="hover:text-white">
                     Documentation
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/tutorials" className="hover:text-white">
+                    Tutorials
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/faq" className="hover:text-white">
+                    FAQ
                   </Link>
                 </li>
               </ul>

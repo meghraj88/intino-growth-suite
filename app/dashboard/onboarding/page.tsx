@@ -17,6 +17,7 @@ import {
   ArrowLeft,
   StoreIcon as Shopify,
   Globe,
+  Zap,
 } from "lucide-react"
 
 const steps = [
@@ -64,8 +65,16 @@ export default function OnboardingPage() {
     <div className="max-w-2xl mx-auto space-y-8">
       {/* Header */}
       <div className="text-center">
+        <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          <Zap className="w-8 h-8 text-white" />
+        </div>
         <h1 className="text-3xl font-bold text-gray-900">Welcome to Intino!</h1>
         <p className="text-gray-600 mt-2">Let's get your dropshipping automation set up in just a few steps.</p>
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4 max-w-md mx-auto">
+          <p className="text-sm text-blue-800">
+            🚀 <strong>Quick Setup:</strong> Most users complete this in under 5 minutes and see their first automated price recommendations immediately!
+          </p>
+        </div>
       </div>
 
       {/* Progress */}
