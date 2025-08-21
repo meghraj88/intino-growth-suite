@@ -12,6 +12,16 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
           <p className="text-gray-600">Welcome back! Here's what's happening with your stores.</p>
+          <div className="flex items-center space-x-6 mt-2">
+            <div className="text-sm">
+              <span className="text-gray-500">Last sync:</span>
+              <span className="text-green-600 ml-1">2 minutes ago</span>
+            </div>
+            <div className="text-sm">
+              <span className="text-gray-500">Active alerts:</span>
+              <span className="text-orange-600 ml-1">3</span>
+            </div>
+          </div>
         </div>
         <div className="flex items-center space-x-3">
           <Button variant="outline">

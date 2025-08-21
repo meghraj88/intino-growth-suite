@@ -1,7 +1,20 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, TrendingUp, RefreshCw, MapPin, Zap, Shield, Globe } from "lucide-react"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+  Zap,
+  TrendingUp,
+  RefreshCw,
+  Bell,
+  ArrowRight,
+  CheckCircle,
+  Star,
+  DollarSign,
+  Shield,
+  Clock,
+  Smartphone,
+} from "lucide-react"
 import Link from "next/link"
 
 export default function LandingPage() {
