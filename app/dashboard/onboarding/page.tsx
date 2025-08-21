@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState } from "react"
@@ -64,7 +65,7 @@ export default function OnboardingPage() {
 
     // Redirect to the dashboard
     window.location.href = '/dashboard';
-  
+  }
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -307,18 +308,19 @@ export default function OnboardingPage() {
             Skip for now
           </Button>
         </div>
-        <div className="flex space-x-3"></div>
-        {currentStep === steps.length ? (
-          <Button onClick={handleFinishOnboarding} className="flex-1">
-            Complete Setup
-            <ArrowRight className="w-4 h-4 ml-2" />
-          </Button>
-        ) : (
-          <Button onClick={handleNext} className="flex-1">
-            Next
-            <ArrowRight className="w-4 h-4 ml-2" />
-          </Button>
-        )}
+        <div className="flex space-x-3">
+          {currentStep === steps.length ? (
+            <Button onClick={handleFinishOnboarding} className="flex-1">
+              Complete Setup
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          ) : (
+            <Button onClick={handleNext} className="flex-1">
+              Next
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   )
