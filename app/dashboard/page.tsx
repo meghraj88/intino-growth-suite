@@ -40,60 +40,74 @@ export default function DashboardPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="border-l-4 border-l-green-500">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Real Profit</CardTitle>
-            <TrendingUp className="h-4 w-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">$18,924.50</div>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-green-600">+23.5%</span> profit margin this month
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-              Revenue: $45,231 - Costs: $26,306.50
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Orders</CardTitle>
-            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">23</div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingDown className="w-3 h-3 mr-1 text-red-500" />
-              -5 from yesterday
+        <Card className="glass-card shadow-premium card-hover" style={{ animationDelay: '0ms' }}>
+          <CardContent className="p-6">
+            <div className="flex items-center">
+              <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg floating">
+                <DollarSign className="w-6 h-6 text-white" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Revenue</p>
+                <p className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">$142,580</p>
+                <div className="flex items-center mt-1">
+                  <TrendingUp className="w-3 h-3 text-green-500 mr-1" />
+                  <span className="text-xs text-green-600">+12.5%</span>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Refund Risk</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">8.2%</div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingDown className="w-3 h-3 mr-1 text-green-500" />
-              -1.3% from last week
+        <Card className="glass-card shadow-premium card-hover" style={{ animationDelay: '100ms' }}>
+          <CardContent className="p-6">
+            <div className="flex items-center">
+              <div className="p-3 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl shadow-lg floating">
+                <Package className="w-6 h-6 text-white" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Products Synced</p>
+                <p className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">847</p>
+                <div className="flex items-center mt-1">
+                  <Package className="w-3 h-3 text-blue-500 mr-1" />
+                  <span className="text-xs text-blue-600">+23 today</span>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Trending Products</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">12</div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingUp className="w-3 h-3 mr-1 text-green-500" />
-              +3 new this week
+        <Card className="glass-card shadow-premium card-hover" style={{ animationDelay: '200ms' }}>
+          <CardContent className="p-6">
+            <div className="flex items-center">
+              <div className="p-3 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-xl shadow-lg floating">
+                <ShoppingCart className="w-6 h-6 text-white" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Orders This Month</p>
+                <p className="text-2xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">256</p>
+                <div className="flex items-center mt-1">
+                  <TrendingUp className="w-3 h-3 text-green-500 mr-1" />
+                  <span className="text-xs text-green-600">+8.3%</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="glass-card shadow-premium card-hover" style={{ animationDelay: '300ms' }}>
+          <CardContent className="p-6">
+            <div className="flex items-center">
+              <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl shadow-lg floating">
+                <TrendingUp className="w-6 h-6 text-white" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Avg. Profit Margin</p>
+                <p className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">32.4%</p>
+                <div className="flex items-center mt-1">
+                  <TrendingUp className="w-3 h-3 text-green-500 mr-1" />
+                  <span className="text-xs text-green-600">+2.1%</span>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>

@@ -74,7 +74,7 @@ export default function OnboardingPage() {
   const currentStepData = steps[currentStep - 1]
 
   return (
-    <div className="max-w-2xl mx-auto space-y-8 page-transition">
+    <div className="max-w-2xl mx-auto space-y-6 md:space-y-8 page-transition px-4 md:px-0">
       {/* Header */}
       <div className="text-center">
         <div className="w-20 h-20 bg-gradient-to-br from-blue-600 via-purple-600 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 floating shadow-premium">
@@ -91,7 +91,7 @@ export default function OnboardingPage() {
 
       {/* Progress */}
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between overflow-x-auto pb-2">
           {steps.map((step, index) => (
             <div key={step.id} className="flex items-center">
               <div className="flex items-center space-x-3">
