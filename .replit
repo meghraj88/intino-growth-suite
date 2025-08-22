@@ -64,12 +64,16 @@ localPort = 5000
 externalPort = 8008
 
 [workflows]
-runButton = "Development Server Clean Start"
+runButton = "Development Server"
 
 [[workflows.workflow]]
 name = "Development Server"
 author = 42300581
 mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "rm -rf .next"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
