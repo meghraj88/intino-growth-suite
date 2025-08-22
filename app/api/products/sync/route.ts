@@ -4,28 +4,52 @@ import { ShopifyIntegration } from "@/lib/integrations/shopify";
 
 export async function POST(request: NextRequest) {
   try {
+    console.log("[SYNC] Starting product sync request");
+    
+    // Log environment variables (without exposing secrets)
+    console.log("[SYNC] Supabase URL configured:", !!process.env.NEXT_PUBLIC_SUPABASE_URL);
+    console.log("[SYNC] Supabase Key configured:", !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+    console.log("[SYNC] Shopify API Key configured:", !!process.env.SHOPIFY_API_KEY);
+    console.log("[SYNC] Shopify API Secret configured:", !!process.env.SHOPIFY_API_SECRET);
+
     const body = await request.json();
     const { storeId } = body;
 
     if (!storeId) {
+      console.log("[SYNC] Error: Store ID is required");
       return NextResponse.json(
         { success: false, error: "Store ID is required" },
         { status: 400 }
       );
     }
 
-    console.log("[v0] Product sync request for storeId:", storeId);
+    console.log("[SYNC] Product sync request for storeId:", storeId);
 
+    console.log("[SYNC] Creating Supabase client");
     const supabase = createClient();
+    
+    console.log("[SYNC] Getting authenticated user");
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     
-    if (userError || !user) {
+    if (userError) {
+      console.error("[SYNC] User authentication error:", userError);
+      return NextResponse.json(
+        { success: false, error: "User authentication failed", details: userError.message },
+        { status: 401 }
+      );
+    }
+    
+    if (!user) {
+      console.log("[SYNC] No authenticated user found");
       return NextResponse.json(
         { success: false, error: "User not authenticated" },
         { status: 401 }
       );
     }
+    
+    console.log("[SYNC] User authenticated:", user.id);
 
+    console.log("[SYNC] Looking up store with ID:", storeId, "for user:", user.id);
     const { data: store, error: storeError } = await supabase
       .from('stores')
       .select('id, access_token, store_domain')
@@ -33,13 +57,23 @@ export async function POST(request: NextRequest) {
       .eq('owner', user.id)
       .single();
 
-    if (storeError || !store) {
-      console.error("[v0] Store not found:", storeError);
+    if (storeError) {
+      console.error("[SYNC] Store lookup error:", storeError);
+      return NextResponse.json(
+        { success: false, error: "Store lookup failed", details: storeError.message },
+        { status: 500 }
+      );
+    }
+    
+    if (!store) {
+      console.log("[SYNC] Store not found for user");
       return NextResponse.json(
         { success: false, error: "Store not found or access denied" },
         { status: 404 }
       );
     }
+    
+    console.log("[SYNC] Store found:", store.store_domain);
 
     if (!store.access_token || !store.store_domain) {
       return NextResponse.json(

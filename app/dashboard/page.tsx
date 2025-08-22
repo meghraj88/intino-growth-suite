@@ -18,13 +18,30 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchStores = async () => {
       try {
+        console.log('Fetching stores...')
         const response = await fetch('/api/stores')
+        console.log('Stores response status:', response.status)
+        
         if (response.ok) {
           const data = await response.json()
+          console.log('Stores data:', data)
           setStores(data.stores || [])
+        } else {
+          const errorData = await response.json()
+          console.error('Failed to fetch stores:', errorData)
+          toast({
+            title: "Error",
+            description: errorData.error || "Failed to fetch stores",
+            variant: "destructive",
+          })
         }
       } catch (error) {
         console.error('Error fetching stores:', error)
+        toast({
+          title: "Network Error",
+          description: "Failed to connect to the server",
+          variant: "destructive",
+        })
       }
     }
     
@@ -38,6 +55,9 @@ export default function DashboardPage() {
       // Find the storeId of the first store from the stores state
       const storeId = stores.length > 0 ? stores[0].id : null
       
+      console.log('Available stores:', stores)
+      console.log('Selected store ID:', storeId)
+      
       if (!storeId) {
         toast({
           title: "No Store Found",
@@ -47,6 +67,8 @@ export default function DashboardPage() {
         return
       }
 
+      console.log('Starting product sync for store:', storeId)
+      
       // Make POST request to /api/products/sync with storeId in JSON body
       const response = await fetch('/api/products/sync', {
         method: 'POST',
@@ -56,7 +78,9 @@ export default function DashboardPage() {
         body: JSON.stringify({ storeId }),
       })
 
+      console.log('Sync response status:', response.status)
       const data = await response.json()
+      console.log('Sync response data:', data)
 
       if (response.ok) {
         // Show success alert
@@ -71,6 +95,11 @@ export default function DashboardPage() {
           description: data.error || "An error occurred during syncing.",
           variant: "destructive",
         })
+        
+        // Log detailed error for debugging
+        if (data.details) {
+          console.error('Sync error details:', data.details)
+        }
       }
     } catch (error) {
       console.error('Error syncing products:', error)
