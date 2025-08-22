@@ -1,11 +1,89 @@
+
+"use client"
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { TrendingUp, TrendingDown, DollarSign, Package, ShoppingCart, AlertTriangle, ArrowUpRight } from "lucide-react"
 import Link from "next/link"
 import { Toaster } from "@/components/ui/toaster"
+import { useState, useEffect } from "react"
+import { toast } from "@/components/ui/use-toast"
 
 export default function DashboardPage() {
+  const [loading, setLoading] = useState(false)
+  const [stores, setStores] = useState([])
+
+  // Fetch stores data on component mount
+  useEffect(() => {
+    const fetchStores = async () => {
+      try {
+        const response = await fetch('/api/stores')
+        if (response.ok) {
+          const data = await response.json()
+          setStores(data.stores || [])
+        }
+      } catch (error) {
+        console.error('Error fetching stores:', error)
+      }
+    }
+    
+    fetchStores()
+  }, [])
+
+  const handleSyncProducts = async () => {
+    setLoading(true)
+    
+    try {
+      // Find the storeId of the first store from the stores state
+      const storeId = stores.length > 0 ? stores[0].id : null
+      
+      if (!storeId) {
+        toast({
+          title: "No Store Found",
+          description: "Please connect a store first before syncing products.",
+          variant: "destructive",
+        })
+        return
+      }
+
+      // Make POST request to /api/products/sync with storeId in JSON body
+      const response = await fetch('/api/products/sync', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ storeId }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        // Show success alert
+        toast({
+          title: "Sync Successful",
+          description: data.message || `Successfully synced ${data.syncedCount} products.`,
+        })
+      } else {
+        // Show error alert
+        toast({
+          title: "Sync Failed",
+          description: data.error || "An error occurred during syncing.",
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      console.error('Error syncing products:', error)
+      toast({
+        title: "Sync Error",
+        description: "An error occurred while syncing products.",
+        variant: "destructive",
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -25,9 +103,9 @@ export default function DashboardPage() {
           </div>
         </div>
         <div className="flex items-center space-x-3">
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleSyncProducts} disabled={loading}>
             <Package className="w-4 h-4 mr-2" />
-            Sync Products
+            {loading ? 'Syncing...' : 'Sync Products'}
           </Button>
           <Link href="/dashboard/onboarding">
             <Button>
