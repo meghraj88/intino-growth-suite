@@ -249,7 +249,7 @@ export default function DashboardLayout({
       </div>
 
       {/* Main content */}
-      <div className="lg:pl-64">
+      <div className="flex-1 flex flex-col lg:pl-64">
         {/* Top bar */}
         <div className="sticky top-0 z-40 flex h-16 items-center gap-x-4 border-b border-white/20 glass-card px-4 shadow-premium sm:gap-x-6 sm:px-6 lg:px-8 dark:border-gray-700/50 backdrop-blur-xl">
           <Button variant="ghost" size="sm" className="lg:hidden hover:bg-white/20 dark:hover:bg-gray-700/50" onClick={() => setSidebarOpen(true)}>
@@ -319,8 +319,8 @@ export default function DashboardLayout({
         </div>
 
         {/* Page content */}
-        <main className="py-4 sm:py-6 lg:py-8 page-transition">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>
+        <main className="flex-1 py-4 sm:py-6 lg:py-8 page-transition">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">{children}</div>
         </main>
       </div>
     </div>
