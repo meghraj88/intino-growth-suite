@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -94,11 +93,15 @@ export default function LandingPage() {
             </Link>
           </nav>
           <div className="flex items-center space-x-3">
-            <Link href="/auth/signin">
-              <Button variant="ghost">Sign In</Button>
+            <Link href="/onboarding">
+              <Button variant="ghost" className="text-gray-600 hover:text-gray-900 hover:bg-gray-100/80 transition-all duration-300">
+                Sign in
+              </Button>
             </Link>
-            <Link href="/auth/signup">
-              <Button>Get Started Free</Button>
+            <Link href="/onboarding">
+              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                Get Started Free
+              </Button>
             </Link>
           </div>
         </div>
@@ -120,7 +123,7 @@ export default function LandingPage() {
             Transform your dropshipping operations with intelligent pricing optimization, automated returns management, 
             and real-time trend detection. Join 10,000+ successful dropshippers who've increased their profits by 40% on average.
           </p>
-          
+
           {/* Key Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10 max-w-4xl mx-auto">
             <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center border border-white/20 shadow-lg">
@@ -142,8 +145,8 @@ export default function LandingPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/auth/signup">
-              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg">
+            <Link href="/onboarding">
+              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
                 Start 14-Day Free Trial <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
@@ -154,7 +157,7 @@ export default function LandingPage() {
               </Button>
             </Link>
           </div>
-          
+
           <p className="text-sm text-gray-500 mt-4">✅ No credit card required • ✅ Cancel anytime • ✅ Setup in 5 minutes</p>
         </div>
       </section>
@@ -835,7 +838,7 @@ export default function LandingPage() {
                 <h3 className="font-semibold text-lg mb-2">How quickly can I see results?</h3>
                 <p className="text-gray-600">Most users see improvements within 24-48 hours of setup. Pricing optimization starts immediately, and trend alerts begin within the first week.</p>
               </div>
-              
+
               <div className="bg-white rounded-lg p-6 shadow-sm">
                 <h3 className="font-semibold text-lg mb-2">Is my data secure?</h3>
                 <p className="text-gray-600">Yes! We use bank-level encryption and are SOC 2 compliant. Your store data is never shared with third parties and is protected by enterprise-grade security.</p>
@@ -886,10 +889,10 @@ export default function LandingPage() {
             Join 10,000+ successful dropshippers using Intino to maximize their profits. 
             Start your free trial today and see results within 24 hours.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Link href="/auth/signup">
-              <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold">
+            <Link href="/onboarding">
+              <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
                 Start Your Free 14-Day Trial <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
@@ -934,7 +937,7 @@ export default function LandingPage() {
                 </div>
               </div>
             </div>
-            
+
             <div>
               <h4 className="font-semibold mb-4 text-lg">Product</h4>
               <ul className="space-y-3 text-gray-400">
@@ -946,7 +949,7 @@ export default function LandingPage() {
                 <li><Link href="/mobile" className="hover:text-white transition-colors">Mobile App</Link></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="font-semibold mb-4 text-lg">Company</h4>
               <ul className="space-y-3 text-gray-400">
@@ -957,7 +960,7 @@ export default function LandingPage() {
                 <li><Link href="/press" className="hover:text-white transition-colors">Press Kit</Link></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="font-semibold mb-4 text-lg">Support</h4>
               <ul className="space-y-3 text-gray-400">
@@ -969,7 +972,7 @@ export default function LandingPage() {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-gray-800 pt-8 mt-12">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <p className="text-gray-400">

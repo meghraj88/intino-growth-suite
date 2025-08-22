@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState } from "react"
@@ -65,14 +64,26 @@ export default function OnboardingPage() {
     }
   }
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
     console.log("Onboarding finished:", formData)
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 2000))
+
+    // Mark onboarding as completed
     localStorage.setItem('onboarding_completed', 'true')
-    toast({
-      title: "Setup Complete!",
-      description: "Your dropshipping automation is ready to go.",
-    })
-    router.push("/dashboard")
+
+    // Create a mock user session
+    const mockUser = {
+      id: 'mock-user-1',
+      email: 'user@example.com',
+      user_metadata: {
+        full_name: 'Demo User'
+      }
+    }
+    localStorage.setItem('mock_user', JSON.stringify(mockUser))
+
+    // Redirect to dashboard
+    router.push('/products')
   }
 
   const renderStepContent = () => {
@@ -84,7 +95,7 @@ export default function OnboardingPage() {
               <h2 className="text-2xl font-bold mb-2">Connect Your Store</h2>
               <p className="text-gray-600">Connect your Shopify or WooCommerce store to start syncing products.</p>
             </div>
-            
+
             <div className="space-y-4">
               <div>
                 <Label htmlFor="storeProvider">Store Platform</Label>
@@ -99,7 +110,7 @@ export default function OnboardingPage() {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div>
                 <Label htmlFor="storeDomain">Store Domain</Label>
                 <Input
@@ -109,7 +120,7 @@ export default function OnboardingPage() {
                   onChange={(e) => handleInputChange("storeDomain", e.target.value)}
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="accessToken">Access Token</Label>
                 <Input
@@ -131,7 +142,7 @@ export default function OnboardingPage() {
               <h2 className="text-2xl font-bold mb-2">Set Currency</h2>
               <p className="text-gray-600">Configure your default currency and location settings.</p>
             </div>
-            
+
             <div className="space-y-4">
               <div>
                 <Label htmlFor="currency">Default Currency</Label>
@@ -147,7 +158,7 @@ export default function OnboardingPage() {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div>
                 <Label htmlFor="country">Target Country</Label>
                 <Select value={formData.country} onValueChange={(value) => handleInputChange("country", value)}>
@@ -173,7 +184,7 @@ export default function OnboardingPage() {
               <h2 className="text-2xl font-bold mb-2">Shipping Defaults</h2>
               <p className="text-gray-600">Set your default shipping costs and delivery times.</p>
             </div>
-            
+
             <div className="space-y-4">
               <div>
                 <Label htmlFor="defaultShippingCost">Default Shipping Cost</Label>
@@ -184,7 +195,7 @@ export default function OnboardingPage() {
                   onChange={(e) => handleInputChange("defaultShippingCost", e.target.value)}
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="shippingTime">Default Shipping Time</Label>
                 <Select value={formData.shippingTime} onValueChange={(value) => handleInputChange("shippingTime", value)}>
@@ -209,7 +220,7 @@ export default function OnboardingPage() {
               <h2 className="text-2xl font-bold mb-2">Margin Rules</h2>
               <p className="text-gray-600">Define your profit margin preferences for automated pricing.</p>
             </div>
-            
+
             <div className="space-y-4">
               <div>
                 <Label htmlFor="targetMargin">Target Margin (%)</Label>
@@ -220,7 +231,7 @@ export default function OnboardingPage() {
                   onChange={(e) => handleInputChange("targetMargin", e.target.value)}
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="minimumMargin">Minimum Margin (%)</Label>
                 <Input
@@ -264,8 +275,8 @@ export default function OnboardingPage() {
             {steps.map((step, index) => (
               <div key={step.id} className="flex items-center">
                 <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
-                  currentStep >= step.id 
-                    ? 'bg-blue-600 border-blue-600 text-white' 
+                  currentStep >= step.id
+                    ? 'bg-blue-600 border-blue-600 text-white'
                     : 'border-gray-300 text-gray-400'
                 }`}>
                   {currentStep > step.id ? (
@@ -293,10 +304,10 @@ export default function OnboardingPage() {
                 })()}
               </div>
             </CardHeader>
-            
+
             <CardContent className="px-8 pb-8">
               {renderStepContent()}
-              
+
               <div className="flex justify-between mt-8">
                 <Button
                   variant="outline"
@@ -305,7 +316,7 @@ export default function OnboardingPage() {
                 >
                   Previous
                 </Button>
-                
+
                 <Button onClick={handleNext} className="bg-gradient-to-r from-blue-600 to-purple-600">
                   {currentStep === steps.length ? "Complete Setup" : "Next"}
                 </Button>
