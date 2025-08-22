@@ -25,10 +25,24 @@ export async function middleware(request: NextRequest) {
     },
   )
 
-  const {
-    data: { user },
-    error
-  } = await supabase.auth.getUser()
+  // Check if Supabase is configured
+  let user = null
+  let error = null
+
+  try {
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_URL !== 'your_supabase_project_url_here') {
+      const result = await supabase.auth.getUser()
+      user = result.data.user
+      error = result.error
+    } else {
+      // Mock authentication check - in a real app you'd check a session cookie
+      // For development, we'll allow access
+      user = { id: 'mock-user' }
+    }
+  } catch (err) {
+    console.error("Auth middleware error:", err)
+    error = err
+  }
 
   // Redirect to signin if accessing dashboard without auth
   if (request.nextUrl.pathname.startsWith("/dashboard") && (!user || error)) {

@@ -83,9 +83,30 @@ export default function DashboardLayout({
   // Effect to check authentication status
   useEffect(() => {
     const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-      setLoading(false);
+      try {
+        // Check if Supabase is properly configured
+        if (!process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL === 'your_supabase_project_url_here') {
+          // Use mock authentication
+          const mockUser = localStorage.getItem('mock_user')
+          if (mockUser) {
+            setUser(JSON.parse(mockUser))
+          }
+          setLoading(false)
+          return
+        }
+
+        const { data: { user } } = await supabase.auth.getUser();
+        setUser(user);
+        setLoading(false);
+      } catch (error) {
+        console.error("Auth check error:", error)
+        // Fallback to mock auth
+        const mockUser = localStorage.getItem('mock_user')
+        if (mockUser) {
+          setUser(JSON.parse(mockUser))
+        }
+        setLoading(false)
+      }
     };
     fetchUser();
   }, []);
@@ -108,7 +129,18 @@ export default function DashboardLayout({
 
   // Logout handler
   const handleLogout = async () => {
-    await supabase.auth.signOut()
+    try {
+      if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_URL !== 'your_supabase_project_url_here') {
+        await supabase.auth.signOut()
+      } else {
+        // Mock logout
+        localStorage.removeItem('mock_user')
+      }
+    } catch (error) {
+      console.error("Logout error:", error)
+      // Fallback to mock logout
+      localStorage.removeItem('mock_user')
+    }
     setUser(null) // Clear user state
     router.push("/auth/signin")
     router.refresh()
