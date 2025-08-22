@@ -115,7 +115,7 @@ export default function DashboardLayout({
   useEffect(() => {
     // If user has not completed onboarding and is not on the onboarding page
     if (user && !localStorage.getItem('onboarding_completed') && !pathname.includes('/onboarding')) {
-      router.push('/dashboard/onboarding');
+      router.push('/onboarding');
     }
   }, [user, pathname, router]);
 
