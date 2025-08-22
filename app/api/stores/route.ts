@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     // Query the stores where the owner matches the user's ID
     const { data: stores, error: storesError } = await supabase
       .from('stores')
-      .select('id, store_domain, platform, status, created_at')
+      .select('id, store_domain, status, created_at')
       .eq('owner', user.id);
 
     if (storesError) {
