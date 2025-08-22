@@ -1,12 +1,13 @@
-
 import { type NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: NextRequest) {
   try {
-    console.log("[STORES] Getting stores for user");
+    console.log("[STORES] Fetching stores for authenticated user");
 
     const supabase = createClient();
+    
+    // Get the authenticated user
     const { data: { user }, error: userError } = await supabase.auth.getUser();
 
     if (userError || !user) {
@@ -17,7 +18,9 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    console.log("[STORES] Fetching stores for user:", user.id);
+    console.log("[STORES] User authenticated:", user.id);
+    
+    // Query the stores where the owner matches the user's ID
     const { data: stores, error: storesError } = await supabase
       .from('stores')
       .select('id, store_domain, platform, status, created_at')
@@ -38,7 +41,6 @@ export async function GET(request: NextRequest) {
       stores: stores || [],
       count: stores?.length || 0
     });
-
   } catch (error) {
     console.error("[STORES] Unexpected error:", error);
     return NextResponse.json(
