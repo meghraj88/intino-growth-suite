@@ -37,6 +37,7 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { createClient } from "@/lib/supabase/client" // Import supabase client
+import { User as SupabaseUser } from "@supabase/supabase-js" // Import Supabase User type
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -69,6 +70,8 @@ export default function DashboardLayout({
   const supabase = createClient()
 
   const [theme, setTheme] = useState<'light' | 'dark'>('light'); // State for theme
+  const [user, setUser] = useState<SupabaseUser | null>(null); // State for user
+  const [loading, setLoading] = useState(true); // State for loading
 
   // Effect to check system preference and apply theme on mount
   useEffect(() => {
@@ -77,15 +80,23 @@ export default function DashboardLayout({
     document.documentElement.classList.toggle('dark', userPreference === 'dark');
   }, []);
 
+  // Effect to check authentication status
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+      setLoading(false);
+    };
+    fetchUser();
+  }, []);
+
   // Check if user needs onboarding
   useEffect(() => {
-    const hasCompletedOnboarding = localStorage.getItem('onboarding_completed');
-
-    // If user hasn't completed onboarding and is not already on onboarding page
-    if (!hasCompletedOnboarding && !pathname.includes('/onboarding')) {
-      window.location.href = '/dashboard/onboarding';
+    // If user has not completed onboarding and is not on the onboarding page
+    if (user && !localStorage.getItem('onboarding_completed') && !pathname.includes('/onboarding')) {
+      router.push('/dashboard/onboarding');
     }
-  }, [pathname]);
+  }, [user, pathname, router]);
 
   // Function to toggle theme
   const toggleTheme = () => {
@@ -98,12 +109,29 @@ export default function DashboardLayout({
   // Logout handler
   const handleLogout = async () => {
     await supabase.auth.signOut()
+    setUser(null) // Clear user state
     router.push("/auth/signin")
     router.refresh()
   }
 
+  // Show loading while checking auth state
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
+
+  // If no user after loading, redirect to signin
+  if (!user) {
+    // Using router.push for client-side navigation
+    router.push('/auth/signin');
+    return null; // Return null as the component will redirect
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20 text-gray-900 dark:text-gray-100 pattern-bg">
+    <div className={`flex h-screen ${theme === 'dark' ? 'dark' : ''}`}>
       {/* Mobile sidebar */}
       <div className={cn("fixed inset-0 z-50 lg:hidden transition-all duration-300", sidebarOpen ? "block" : "hidden")}>
         <div className="fixed inset-0 bg-gray-600/80 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
@@ -216,8 +244,13 @@ export default function DashboardLayout({
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-10 w-10 rounded-full hover:bg-white/20 dark:hover:bg-gray-700/50 transition-all duration-300">
                     <Avatar className="h-10 w-10 ring-2 ring-white/20 dark:ring-gray-700/50 shadow-lg">
-                      <AvatarImage src="/placeholder.svg?height=40&width=40" alt="User" />
-                      <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold">JD</AvatarFallback>
+                      <AvatarImage src="/placeholder-user.jpg" alt="User" />
+                      <AvatarFallback>
+                        {user?.user_metadata?.full_name
+                          ? user.user_metadata.full_name.split(' ').map((n: string) => n[0]).join('').toUpperCase()
+                          : user?.email?.[0]?.toUpperCase() || 'U'
+                        }
+                      </AvatarFallback>
                     </Avatar>
                     <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800 animate-pulse" />
                   </Button>
@@ -225,8 +258,12 @@ export default function DashboardLayout({
                 <DropdownMenuContent className="w-56 glass-card border-white/20 dark:border-gray-700/50 shadow-premium" align="end" forceMount>
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">John Doe</p>
-                      <p className="text-xs leading-none text-muted-foreground">john@example.com</p>
+                      <p className="text-sm font-medium leading-none">
+                        {user?.user_metadata?.full_name || 'User'}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {user?.email || 'No email'}
+                      </p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />

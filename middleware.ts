@@ -27,17 +27,19 @@ export async function middleware(request: NextRequest) {
 
   const {
     data: { user },
+    error
   } = await supabase.auth.getUser()
 
   // Redirect to signin if accessing dashboard without auth
-  if (request.nextUrl.pathname.startsWith("/dashboard") && !user) {
-    return NextResponse.redirect(new URL("/auth/signin", request.url))
+  if (request.nextUrl.pathname.startsWith("/dashboard") && (!user || error)) {
+    const redirectUrl = new URL("/auth/signin", request.url);
+    return NextResponse.redirect(redirectUrl);
   }
 
   // Redirect to dashboard if accessing auth pages while authenticated
   if (
     (request.nextUrl.pathname === "/auth/signin" || request.nextUrl.pathname === "/auth/signup") &&
-    user
+    user && !error
   ) {
     return NextResponse.redirect(new URL("/dashboard", request.url))
   }
