@@ -84,12 +84,12 @@ export default function DashboardPage() {
       
       // Make POST request to /api/products/sync with storeId in JSON body
       const response = await fetch('/api/products/sync', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ storeId }),
-      })
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ storeId }),
+});
 
       console.log('Sync response status:', response.status)
       const data = await response.json()
