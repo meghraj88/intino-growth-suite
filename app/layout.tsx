@@ -1,14 +1,14 @@
-
 import type React from "react"
 import type { Metadata } from "next"
-import "./globals.css"
+import { GeistSans } from "geist/font/sans"
+import { GeistMono } from "geist/font/mono"
 import "./globals.css"
 
 export const metadata: Metadata = {
   title: "Intino - Unified Dropship Growth Suite",
   description:
     "Automate your dropshipping success with AI-powered optimization. Dynamic pricing, smart returns, and localized trend scanning.",
-  generator: "Next.js",
+  generator: "v0.app",
 }
 
 export default function RootLayout({
@@ -17,10 +17,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="font-sans antialiased">
-      <body className="min-h-screen bg-background text-foreground font-inter antialiased">
-        {children}
-      </body>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      <body className="antialiased font-sans">{children}</body>
     </html>
   )
 }
