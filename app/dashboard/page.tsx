@@ -60,10 +60,23 @@ export default function DashboardPage() {
       
       if (!storeId) {
         toast({
-          title: "No Store Found",
-          description: "Please connect a store first before syncing products.",
+          title: "No Store Connected",
+          description: "Please connect a Shopify store first. Go to Settings to add your store credentials.",
           variant: "destructive",
         })
+        setLoading(false)
+        return
+      }
+      
+      // Check if store has access token
+      const store = stores[0]
+      if (!store.access_token) {
+        toast({
+          title: "Store Not Properly Connected",
+          description: "Store credentials are missing. Please reconnect your store in Settings.",
+          variant: "destructive",
+        })
+        setLoading(false)
         return
       }
 
