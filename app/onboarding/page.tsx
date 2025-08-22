@@ -83,7 +83,7 @@ export default function OnboardingPage() {
     localStorage.setItem('mock_user', JSON.stringify(mockUser))
 
     // Redirect to dashboard
-    router.push('/products')
+    router.push('/dashboard/products')
   }
 
   const renderStepContent = () => {
