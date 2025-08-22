@@ -1,11 +1,9 @@
-
 import { type NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { ShopifyIntegration } from "@/lib/integrations/shopify";
 
 export async function POST(request: NextRequest) {
   try {
-    // 1. Receive storeId from request body
     const body = await request.json();
     const { storeId } = body;
 
@@ -18,11 +16,9 @@ export async function POST(request: NextRequest) {
 
     console.log("[v0] Product sync request for storeId:", storeId);
 
-    // 2. Connect to server-side Supabase client
     const supabase = createClient();
-
-    // 3. Get the currently authenticated user
     const { data: { user }, error: userError } = await supabase.auth.getUser();
+    
     if (userError || !user) {
       return NextResponse.json(
         { success: false, error: "User not authenticated" },
@@ -30,7 +26,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 4. Query stores table to find the correct store
     const { data: store, error: storeError } = await supabase
       .from('stores')
       .select('id, access_token, store_domain')
@@ -53,7 +48,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 5. Initialize Shopify API client with store credentials
     const shopifyConfig = {
       apiKey: process.env.SHOPIFY_API_KEY || '',
       apiSecret: process.env.SHOPIFY_API_SECRET || '',
@@ -63,7 +57,6 @@ export async function POST(request: NextRequest) {
 
     const shopify = new ShopifyIntegration(shopifyConfig);
 
-    // 6. Fetch all products from Shopify store
     console.log("[v0] Fetching products from Shopify store:", store.store_domain);
     const shopifyProducts = await shopify.getProducts(250);
 
@@ -77,7 +70,6 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Clear existing products for this store to avoid duplicates
     const { error: deleteError } = await supabase
       .from('products')
       .delete()
@@ -89,13 +81,11 @@ export async function POST(request: NextRequest) {
 
     let syncedCount = 0;
 
-    // 7. Loop through each product and insert into Supabase
     for (const product of shopifyProducts) {
       const formattedProduct = {
         store_id: storeId,
         title: product.title,
         price: product.variants[0].price,
-        // Add more mapping here as necessary
       };
 
       const { error: insertError } = await supabase
@@ -111,7 +101,6 @@ export async function POST(request: NextRequest) {
 
     console.log(`[v0] Successfully synced ${syncedCount} products for store ${storeId}`);
 
-    // 10. Return success response with sync count
     return NextResponse.json({
       success: true,
       message: `Successfully synced ${syncedCount} products`,
