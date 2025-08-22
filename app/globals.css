@@ -1,88 +1,83 @@
 
-@import 'tailwindcss';
-@import 'tw-animate-css';
-
-@custom-variant dark (&:is(.dark *));
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-:root {
-  /* Professional Color Palette */
-  --color-primary: #6366f1;
-  --color-primary-dark: #4f46e5;
-  --color-primary-light: #818cf8;
-  --color-secondary: #1f2937;
-  --color-accent: #f59e0b;
-  
-  /* Neutral Grays */
-  --color-gray-50: #f9fafb;
-  --color-gray-100: #f3f4f6;
-  --color-gray-200: #e5e7eb;
-  --color-gray-300: #d1d5db;
-  --color-gray-400: #9ca3af;
-  --color-gray-500: #6b7280;
-  --color-gray-600: #4b5563;
-  --color-gray-700: #374151;
-  --color-gray-800: #1f2937;
-  --color-gray-900: #111827;
-  
-  /* Status Colors */
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-error: #ef4444;
-  
-  /* Semantic Colors */
-  --background: var(--color-gray-50);
-  --foreground: var(--color-gray-900);
-  --card: #ffffff;
-  --card-foreground: var(--color-gray-900);
-  --popover: #ffffff;
-  --popover-foreground: var(--color-gray-900);
-  --primary: var(--color-primary);
-  --primary-foreground: #ffffff;
-  --secondary: var(--color-gray-100);
-  --secondary-foreground: var(--color-gray-900);
-  --muted: var(--color-gray-100);
-  --muted-foreground: var(--color-gray-500);
-  --accent: var(--color-accent);
-  --accent-foreground: #ffffff;
-  --destructive: var(--color-error);
-  --destructive-foreground: #ffffff;
-  --border: var(--color-gray-200);
-  --input: #ffffff;
-  --ring: var(--color-primary);
-  --radius: 0.75rem;
-}
-
-.dark {
-  --background: var(--color-gray-900);
-  --foreground: var(--color-gray-50);
-  --card: var(--color-gray-800);
-  --card-foreground: var(--color-gray-50);
-  --popover: var(--color-gray-800);
-  --popover-foreground: var(--color-gray-50);
-  --primary: var(--color-primary-light);
-  --primary-foreground: var(--color-gray-900);
-  --secondary: var(--color-gray-800);
-  --secondary-foreground: var(--color-gray-50);
-  --muted: var(--color-gray-800);
-  --muted-foreground: var(--color-gray-400);
-  --accent: var(--color-accent);
-  --accent-foreground: var(--color-gray-900);
-  --destructive: var(--color-error);
-  --destructive-foreground: var(--color-gray-50);
-  --border: var(--color-gray-700);
-  --input: var(--color-gray-800);
-  --ring: var(--color-primary-light);
-}
-
-@theme inline {
-  --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
-}
-
 @layer base {
+  :root {
+    /* Professional Color Palette */
+    --color-primary: 239 68% 68%;
+    --color-primary-dark: 243 75% 59%;
+    --color-primary-light: 224 76% 75%;
+    --color-secondary: 210 22% 22%;
+    --color-accent: 38 92% 50%;
+    
+    /* Neutral Grays */
+    --color-gray-50: 210 20% 98%;
+    --color-gray-100: 220 14% 96%;
+    --color-gray-200: 220 13% 91%;
+    --color-gray-300: 216 12% 84%;
+    --color-gray-400: 218 11% 65%;
+    --color-gray-500: 220 9% 46%;
+    --color-gray-600: 215 14% 34%;
+    --color-gray-700: 217 19% 27%;
+    --color-gray-800: 215 28% 17%;
+    --color-gray-900: 222 84% 5%;
+    
+    /* Status Colors */
+    --color-success: 142 76% 36%;
+    --color-warning: 38 92% 50%;
+    --color-error: 0 84% 60%;
+    
+    /* Semantic Colors for shadcn/ui */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 239 68% 68%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 239 68% 68%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 224 76% 75%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224 76% 75%;
+  }
+
   * {
-    @apply border-border outline-ring/20;
+    @apply border-border;
   }
   
   body {
@@ -91,7 +86,7 @@
   }
   
   html {
-    font-family: var(--font-inter);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
     scroll-behavior: smooth;
   }
   
@@ -152,7 +147,7 @@
   
   /* Primary Button */
   .btn-primary {
-    @apply bg-primary hover:bg-primary-dark text-primary-foreground;
+    @apply bg-primary hover:bg-primary/90 text-primary-foreground;
     @apply px-6 py-3 rounded-xl font-semibold text-sm;
     @apply transition-all duration-200 ease-out;
     @apply shadow-sm hover:shadow-md;
@@ -184,11 +179,11 @@
   
   /* Gradient Backgrounds */
   .gradient-primary {
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+    background: linear-gradient(135deg, hsl(239 68% 68%) 0%, hsl(256 65% 69%) 50%, hsl(270 65% 71%) 100%);
   }
   
   .gradient-secondary {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    background: linear-gradient(135deg, hsl(210 20% 98%) 0%, hsl(220 14% 96%) 100%);
   }
   
   /* Status Indicators */
