@@ -5,6 +5,7 @@ import { ShopifyIntegration } from "@/lib/integrations/shopify"
 
 export async function POST(request: NextRequest) {
   try {
+    // 1. Receive storeId from request body
     const body = await request.json()
     const { storeId } = body
 
@@ -17,10 +18,10 @@ export async function POST(request: NextRequest) {
 
     console.log("[v0] Product sync request for storeId:", storeId)
 
-    // Initialize Supabase client
+    // 2. Connect to server-side Supabase client
     const supabase = createClient()
 
-    // Get authenticated user
+    // 3. Get the currently authenticated user
     const { data: { user }, error: userError } = await supabase.auth.getUser()
     if (userError || !user) {
       return NextResponse.json(
@@ -29,7 +30,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Fetch store details from Supabase
+    // 4. Query stores table to find the correct store
     const { data: store, error: storeError } = await supabase
       .from('stores')
       .select('id, access_token, store_domain, provider, currency, country')
@@ -45,14 +46,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Only support Shopify for now
-    if (store.provider !== 'shopify') {
-      return NextResponse.json(
-        { success: false, error: "Only Shopify stores are supported currently" },
-        { status: 400 }
-      )
-    }
-
     if (!store.access_token || !store.store_domain) {
       return NextResponse.json(
         { success: false, error: "Store credentials are incomplete" },
@@ -60,7 +53,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create Shopify client
+    // 5. Initialize Shopify API client with store credentials
     const shopifyConfig = {
       apiKey: process.env.SHOPIFY_API_KEY || '',
       apiSecret: process.env.SHOPIFY_API_SECRET || '',
@@ -70,9 +63,9 @@ export async function POST(request: NextRequest) {
 
     const shopify = new ShopifyIntegration(shopifyConfig)
 
-    // Fetch products from Shopify
+    // 6. Fetch all products from Shopify store
     console.log("[v0] Fetching products from Shopify store:", store.store_domain)
-    const shopifyProducts = await shopify.getProducts(250) // Get up to 250 products
+    const shopifyProducts = await shopify.getProducts(250)
 
     if (!shopifyProducts || shopifyProducts.length === 0) {
       return NextResponse.json({
@@ -84,12 +77,25 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // Format and prepare products for Supabase
-    const productsToInsert = shopifyProducts.map((product: any) => {
+    // Clear existing products for this store to avoid duplicates
+    const { error: deleteError } = await supabase
+      .from('products')
+      .delete()
+      .eq('store_id', storeId)
+
+    if (deleteError) {
+      console.error("[v0] Error deleting existing products:", deleteError)
+    }
+
+    let syncedCount = 0
+
+    // 7. Loop through each product from Shopify
+    for (const product of shopifyProducts) {
+      // 8. Format data to match Supabase products table
       const variant = product.variants?.[0] || {}
       const image = product.images?.[0] || {}
       
-      return {
+      const formattedProduct = {
         store_id: storeId,
         supplier_id: null,
         supplier_sku: variant.sku || product.id.toString(),
@@ -97,10 +103,10 @@ export async function POST(request: NextRequest) {
         description: product.body_html || product.summary || '',
         image_url: image.src || '/placeholder.png',
         cost: variant.price ? parseFloat(variant.price) : 0,
-        shipping_cost: 0, // Default shipping cost
+        shipping_cost: 0,
         last_synced: new Date().toISOString(),
-        suggested_price: variant.price ? parseFloat(variant.price) * 1.5 : 0, // 50% markup
-        margin_percent: 33.33, // Default margin
+        suggested_price: variant.price ? parseFloat(variant.price) * 1.5 : 0,
+        margin_percent: 33.33,
         region: store.country || 'US',
         metadata: {
           shopify_product_id: product.id,
@@ -113,39 +119,22 @@ export async function POST(request: NextRequest) {
           updated_at_shopify: product.updated_at
         }
       }
-    })
 
-    // Delete existing products for this store to avoid duplicates
-    const { error: deleteError } = await supabase
-      .from('products')
-      .delete()
-      .eq('store_id', storeId)
+      // 9. Insert formatted product into products table
+      const { error: insertError } = await supabase
+        .from('products')
+        .insert([formattedProduct])
 
-    if (deleteError) {
-      console.error("[v0] Error deleting existing products:", deleteError)
+      if (insertError) {
+        console.error("[v0] Error inserting product:", product.title, insertError)
+      } else {
+        syncedCount++
+      }
     }
 
-    // Insert products into Supabase
-    const { data: insertedProducts, error: insertError } = await supabase
-      .from('products')
-      .insert(productsToInsert)
-      .select('id')
-
-    if (insertError) {
-      console.error("[v0] Error inserting products:", insertError)
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: "Failed to save products to database",
-          details: insertError.message
-        }, 
-        { status: 500 }
-      )
-    }
-
-    const syncedCount = insertedProducts?.length || 0
     console.log(`[v0] Successfully synced ${syncedCount} products for store ${storeId}`)
 
+    // 10. Return success response with sync count
     return NextResponse.json({
       success: true,
       message: `Successfully synced ${syncedCount} products`,
