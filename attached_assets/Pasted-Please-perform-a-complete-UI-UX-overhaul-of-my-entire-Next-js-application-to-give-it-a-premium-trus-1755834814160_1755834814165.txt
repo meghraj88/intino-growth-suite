@@ -1,0 +1,28 @@
+Please perform a complete UI/UX overhaul of my entire Next.js application to give it a premium, trustworthy, and modern aesthetic, similar in quality to websites like getharvest.com or stripe.com. Do not copy them, but use them as inspiration for the quality standard.
+
+Here are the detailed instructions:
+
+1.  **Color Palette:**
+    * Implement a professional and clean color scheme.
+    * The primary brand color should be a sophisticated dark purple or a deep blue. Use this for all main call-to-action buttons, links, and important highlights.
+    * Use a range of neutral grays (from light to dark) for backgrounds, text, and borders.
+    * Ensure the text has a very high contrast ratio against the background to be easily readable.
+
+2.  **Typography (Fonts):**
+    * Update the font pairing in `app/layout.tsx` to use a clean, modern, sans-serif font like "Inter" or "Manrope" from Google Fonts.
+    * Establish a clear font hierarchy: large, bold headings; smaller subheadings; and perfectly readable body text.
+
+3.  **Layout and Spacing:**
+    * Increase the use of white space across all pages to make the design feel clean and uncluttered.
+    * Ensure all elements (cards, forms, buttons) are perfectly aligned with a consistent grid system. Check padding and margins everywhere.
+
+4.  **Graphics and Icons:**
+    * Replace all existing icons with a consistent, professional icon set, preferably from "lucide-react" which is already in the project.
+    * On the landing page, suggest and create placeholders for professional graphics or subtle illustrations that explain the app's features (e.g., for Dynamic Pricing, Trend Scanning).
+
+5.  **Animations and Micro-interactions:**
+    * Add subtle, professional animations.
+    * Buttons and links should have a slight visual change on hover (e.g., get slightly brighter or bigger).
+    * When new data loads on the dashboard, it should fade in smoothly instead of just appearing suddenly.
+
+Please apply these changes across all relevant files, including `globals.css`, `tailwind.config.ts`, all `page.tsx` files, and any component files.
