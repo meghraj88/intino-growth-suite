@@ -22,6 +22,13 @@ export default function DebugPage() {
   const fetchDebugInfo = async () => {
     setLoading(true)
     try {
+      // Log environment variables for debugging
+      console.log('=== ENVIRONMENT VARIABLES DEBUG ===')
+      console.log('SHOPIFY_API_KEY:', process.env.SHOPIFY_API_KEY)
+      console.log('SHOPIFY_API_SECRET:', process.env.SHOPIFY_API_SECRET ? 'Set' : 'Not set')
+      console.log('NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+      console.log('===================================')
+
       // Fetch stores
       const storesResponse = await fetch('/api/stores')
       const storesData = await storesResponse.json()
