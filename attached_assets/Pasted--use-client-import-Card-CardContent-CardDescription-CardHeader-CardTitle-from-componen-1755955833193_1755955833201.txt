@@ -1,0 +1,96 @@
+"use client";
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { TrendingUp, TrendingDown, DollarSign, Package, ShoppingCart, AlertTriangle } from "lucide-react";
+import { Toaster } from "@/components/ui/toaster";
+import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase/client"; // Ensure correct Supabase client import
+
+export default function DashboardPage() {
+  const [loading, setLoading] = useState(false);
+  const [stores, setStores] = useState([]);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  useEffect(() => {
+    const fetchStores = async () => {
+      setLoading(true);
+      const supabase = createClient();
+      const { data, error } = await supabase.from('stores').select('id, store_domain, access_token, created_at');
+
+      if (error) {
+        console.error("Error fetching stores:", error);
+        setErrorMsg("Failed to load stores.");
+      } else {
+        setStores(data || []);
+      }
+      setLoading(false);
+    };
+
+    fetchStores();
+  }, []);
+
+  const totalStats = {
+    total_stores: stores.length,
+    active_stores: stores.filter(s => s.status === 'active').length,
+    total_products: stores.reduce((sum, s) => sum + (s.products_count || 0), 0),
+    total_revenue: stores.reduce((sum, s) => sum + (s.revenue_30d || 0), 0),
+  };
+
+  if (loading) {
+    return <div className="text-center">Loading...</div>;
+  }
+
+  return (
+    <div className="space-y-6 p-6">
+      <h1 className="text-2xl font-bold">🏠 Dashboard</h1>
+      
+      {errorMsg && <div className="text-red-500">{errorMsg}</div>}
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {stores.length === 0 ? (
+          <Card>
+            <CardContent>
+              <CardTitle>No Connected Stores</CardTitle>
+              <CardDescription>There are no stores connected yet.</CardDescription>
+            </CardContent>
+          </Card>
+        ) : (
+          stores.map((store) => (
+            <Card key={store.id}>
+              <CardHeader>
+                <CardTitle>{store.store_domain}</CardTitle>
+                <CardDescription>Store ID: {store.id}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p>Access Token: {store.access_token}</p>
+                <p>Created At: {new Date(store.created_at).toLocaleString()}</p>
+              </CardContent>
+            </Card>
+          ))
+        )}
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>🏪 Total Connected Stores</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{totalStats.total_stores}</div>
+        </CardContent>
+      </Card>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle>💰 Total Revenue</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">${totalStats.total_revenue.toLocaleString()}</div>
+        </CardContent>
+      </Card>
+
+      <Toaster />
+    </div>
+  );
+}
