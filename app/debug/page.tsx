@@ -182,6 +182,29 @@ export default function DebugPage() {
     }
   }
 
+  const checkServerEnvVars = async () => {
+    try {
+      const response = await fetch('/api/debug/env')
+      const data = await response.json()
+      
+      console.log('=== SERVER ENVIRONMENT VARIABLES ===')
+      console.log(data)
+      console.log('====================================')
+      
+      toast({
+        title: "🔍 Environment Check Complete",
+        description: "Check browser console for server environment variables",
+      })
+    } catch (error) {
+      console.error('Environment check error:', error)
+      toast({
+        title: "❌ Environment Check Failed",
+        description: "Failed to check server environment variables",
+        variant: "destructive"
+      })
+    }
+  }
+
   return (
     <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
@@ -380,6 +403,13 @@ export default function DebugPage() {
               onClick={() => window.location.reload()}
             >
               Hard Refresh
+            </Button>
+            
+            <Button 
+              variant="outline"
+              onClick={checkServerEnvVars}
+            >
+              Check Server Env Vars
             </Button>
           </div>
         </CardContent>
