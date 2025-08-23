@@ -26,18 +26,25 @@ export default function DebugPage() {
     setEnvStatus({
       supabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
       supabaseKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-      shopifyKey: false, // Server-side only
+     shopifyKey: false, // Server-side only
       shopifySecret: false // Server-side only
-    })
-    
-    fetchDebugInfo()
-  }, [])
+    }); // Closing the setEnvStatus function call
 
-  const fetchDebugInfo = async () => {
-    setLoading(true)
+        const fetchDebugInfo = async () => {
+    setLoading(true);
     try {
-      // Log environment variables for debugging
-      console.log('=== ENVIRONMENT VARIABLES DEBUG ===')
+        console.log('=== ENVIRONMENT VARIABLES DEBUG ===');
+        console.log('SHOPIFY_API_KEY:', process.env.SHOPIFY_API_KEY);
+        // ... more logs
+    } catch (error) {
+        console.error('Debug fetch error:', error);
+    } finally {
+        setLoading(false);
+    }
+};
+    try {
+      // Log environment variables for debugging 
+      console.log('SHOPIFY_API_KEY:', process.env.SHOPIFY_API_KEY)
       console.log('SHOPIFY_API_KEY:', process.env.SHOPIFY_API_KEY)
       console.log('SHOPIFY_API_SECRET:', process.env.SHOPIFY_API_SECRET ? 'Set' : 'Not set')
       console.log('NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
