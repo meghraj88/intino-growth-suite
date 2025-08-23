@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState } from "react"
@@ -8,7 +9,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Zap, Store, DollarSign, Globe, Truck, TrendingUp, Check } from "lucide-react"
-import { toast } from "@/hooks/use-toast"
 
 export default function OnboardingPage() {
   const router = useRouter()
@@ -66,21 +66,21 @@ export default function OnboardingPage() {
 
   const handleFinish = async () => {
     console.log("Onboarding finished:", formData)
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 2000))
-
+    
     // Mark onboarding as completed
-    localStorage.setItem('onboarding_completed', 'true')
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('onboarding_completed', 'true')
 
-    // Create a mock user session
-    const mockUser = {
-      id: 'mock-user-1',
-      email: 'user@example.com',
-      user_metadata: {
-        full_name: 'Demo User'
+      // Create a mock user session
+      const mockUser = {
+        id: 'mock-user-1',
+        email: 'user@example.com',
+        user_metadata: {
+          full_name: 'Demo User'
+        }
       }
+      localStorage.setItem('mock_user', JSON.stringify(mockUser))
     }
-    localStorage.setItem('mock_user', JSON.stringify(mockUser))
 
     // Redirect to dashboard
     router.push('/dashboard/products')
