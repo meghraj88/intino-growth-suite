@@ -63,15 +63,55 @@ export async function POST(request: NextRequest) {
     const shopify = new ShopifyIntegration(shopifyConfig);
 
     console.log("[SYNC] Fetching products from Shopify store:", store.store_domain);
-    const shopifyProducts = await shopify.getProducts(250);
+    console.log("[SYNC] Using access token:", store.access_token.substring(0, 10) + '...');
+    
+    let shopifyProducts;
+    try {
+      shopifyProducts = await shopify.getProducts(250);
+      console.log("[SYNC] Raw Shopify API response received, products count:", shopifyProducts?.length || 0);
+    } catch (shopifyError) {
+      console.error("[SYNC] Shopify API Error:", shopifyError);
+      return NextResponse.json({
+        success: false,
+        error: "Shopify API access failed. Please check your store credentials.",
+        details: shopifyError instanceof Error ? shopifyError.message : 'Unknown Shopify error',
+        storeDomain: store.store_domain
+      }, { status: 400 });
+    }
 
     if (!shopifyProducts || shopifyProducts.length === 0) {
       console.log("[SYNC] No products found in store");
+      
+      // Test if API access is working by trying to fetch store info
+      try {
+        const testResponse = await fetch(`https://${store.store_domain}/admin/api/2023-10/shop.json`, {
+          headers: {
+            "X-Shopify-Access-Token": store.access_token,
+            "Content-Type": "application/json",
+          },
+        });
+        
+        if (!testResponse.ok) {
+          console.log("[SYNC] Store API test failed:", testResponse.status, testResponse.statusText);
+          return NextResponse.json({
+            success: false,
+            error: `Shopify store access denied. Status: ${testResponse.status}`,
+            details: "Invalid access token or store domain",
+            storeDomain: store.store_domain
+          }, { status: 401 });
+        } else {
+          console.log("[SYNC] Store API access is working, but no products found");
+        }
+      } catch (testError) {
+        console.error("[SYNC] Store API test error:", testError);
+      }
+      
       return NextResponse.json({
         success: true,
-        message: "No products found in store",
+        message: "Store is accessible but no products found. Please add products to your Shopify store.",
         syncedCount: 0,
         storeId: storeId,
+        storeDomain: store.store_domain,
         timestamp: new Date().toISOString(),
       });
     }

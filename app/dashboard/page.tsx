@@ -52,28 +52,34 @@ export default function DashboardPage() {
     setLoading(true)
     
     try {
-      // Find the storeId of the first store from the stores state
-      const storeId = stores.length > 0 ? stores[0].id : null
-      
+      console.log('=== SYNC DEBUG START ===')
       console.log('Available stores:', stores)
+      
+      const storeId = stores.length > 0 ? stores[0].id : null
       console.log('Selected store ID:', storeId)
       
       if (!storeId) {
         toast({
-          title: "No Store Connected",
-          description: "Please connect a Shopify store first. Go to Settings to add your store credentials.",
+          title: "कोई स्टोर कनेक्ट नहीं है",
+          description: "पहले Shopify store connect करें। Settings में जाकर अपने store की details add करें।",
           variant: "destructive",
         })
         setLoading(false)
         return
       }
       
-      // Check if store has access token
       const store = stores[0]
-      if (!store.access_token) {
+      console.log('Store details:', {
+        id: store.id,
+        domain: store.store_domain,
+        hasToken: !!store.access_token,
+        tokenPreview: store.access_token ? store.access_token.substring(0, 10) + '...' : 'NO TOKEN'
+      })
+      
+      if (!store.access_token || !store.store_domain) {
         toast({
-          title: "Store Not Properly Connected",
-          description: "Store credentials are missing. Please reconnect your store in Settings.",
+          title: "स्टोर सही तरीके से कनेक्ट नहीं है",
+          description: "Store credentials missing हैं। Settings में जाकर store को फिर से connect करें।",
           variant: "destructive",
         })
         setLoading(false)
@@ -81,35 +87,41 @@ export default function DashboardPage() {
       }
 
       console.log('Starting product sync for store:', storeId)
+      console.log('Store domain:', store.store_domain)
       
-      // Make POST request to /api/products/sync with storeId in JSON body
       const response = await fetch('/api/products/sync', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({ storeId }),
-});
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ storeId }),
+      });
 
       console.log('Sync response status:', response.status)
       const data = await response.json()
       console.log('Sync response data:', data)
+      console.log('=== SYNC DEBUG END ===')
 
       if (response.ok) {
-        // Show success alert
-        toast({
-          title: "Sync Successful",
-          description: data.message || `Successfully synced ${data.syncedCount} products.`,
-        })
+        if (data.syncedCount === 0) {
+          toast({
+            title: "⚠️ कोई products नहीं मिले",
+            description: `आपके Shopify store (${store.store_domain}) में कोई products नहीं हैं या वे access नहीं हो पा रहे।`,
+            variant: "destructive",
+          })
+        } else {
+          toast({
+            title: "✅ Sync Successful!",
+            description: `${data.syncedCount} products successfully sync हो गए।`,
+          })
+        }
       } else {
-        // Show error alert
         toast({
-          title: "Sync Failed",
-          description: data.error || "An error occurred during syncing.",
+          title: "❌ Sync Failed",
+          description: data.error || "Syncing के दौरान error आया।",
           variant: "destructive",
         })
         
-        // Log detailed error for debugging
         if (data.details) {
           console.error('Sync error details:', data.details)
         }
@@ -117,8 +129,8 @@ export default function DashboardPage() {
     } catch (error) {
       console.error('Error syncing products:', error)
       toast({
-        title: "Sync Error",
-        description: "An error occurred while syncing products.",
+        title: "🚨 Network Error",
+        description: "Internet connection या server में problem है।",
         variant: "destructive",
       })
     } finally {
