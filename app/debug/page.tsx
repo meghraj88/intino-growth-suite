@@ -14,8 +14,22 @@ export default function DebugPage() {
   const [stores, setStores] = useState([])
   const [debugData, setDebugData] = useState(null)
   const [showTokens, setShowTokens] = useState(false)
+  const [envStatus, setEnvStatus] = useState({
+    supabaseUrl: false,
+    supabaseKey: false,
+    shopifyKey: false,
+    shopifySecret: false
+  })
 
   useEffect(() => {
+    // Check client-side accessible environment variables
+    setEnvStatus({
+      supabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+      supabaseKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      shopifyKey: false, // Server-side only
+      shopifySecret: false // Server-side only
+    })
+    
     fetchDebugInfo()
   }, [])
 
@@ -34,15 +48,7 @@ export default function DebugPage() {
       const storesData = await storesResponse.json()
       setStores(storesData.stores || [])
 
-      // Test environment variables
-      const envCheck = {
-        supabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-        supabaseKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-        shopifyKey: !!process.env.SHOPIFY_API_KEY,
-        shopifySecret: !!process.env.SHOPIFY_API_SECRET
-      }
-
-      setDebugData({ stores: storesData, envCheck })
+      setDebugData({ stores: storesData })
     } catch (error) {
       console.error('Debug fetch error:', error)
     } finally {
@@ -227,32 +233,26 @@ export default function DebugPage() {
         <CardContent>
           <div className="grid grid-cols-2 gap-4">
             <div className="flex items-center space-x-2">
-              {process.env.NEXT_PUBLIC_SUPABASE_URL ? 
+              {envStatus.supabaseUrl ? 
                 <CheckCircle className="w-5 h-5 text-green-500" /> : 
                 <XCircle className="w-5 h-5 text-red-500" />
               }
               <span>Supabase URL</span>
             </div>
             <div className="flex items-center space-x-2">
-              {process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 
+              {envStatus.supabaseKey ? 
                 <CheckCircle className="w-5 h-5 text-green-500" /> : 
                 <XCircle className="w-5 h-5 text-red-500" />
               }
               <span>Supabase Key</span>
             </div>
             <div className="flex items-center space-x-2">
-              {process.env.SHOPIFY_API_KEY ? 
-                <CheckCircle className="w-5 h-5 text-green-500" /> : 
-                <XCircle className="w-5 h-5 text-red-500" />
-              }
-              <span>Shopify API Key</span>
+              <AlertCircle className="w-5 h-5 text-yellow-500" />
+              <span>Shopify API Key (Server-side only)</span>
             </div>
             <div className="flex items-center space-x-2">
-              {process.env.SHOPIFY_API_SECRET ? 
-                <CheckCircle className="w-5 h-5 text-green-500" /> : 
-                <XCircle className="w-5 h-5 text-red-500" />
-              }
-              <span>Shopify Secret</span>
+              <AlertCircle className="w-5 h-5 text-yellow-500" />
+              <span>Shopify Secret (Server-side only)</span>
             </div>
           </div>
         </CardContent>
