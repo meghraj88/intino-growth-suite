@@ -11,8 +11,8 @@ packages = ["unzip"]
 NEXT_TELEMETRY_DISABLED = "1"
 
 [deployment]
-build = ["npm", "run", "build"]
-run = ["npm", "run", "start"]
+build = ["sh", "-c", "npm run build"]
+run = ["sh", "-c", "npm start"]
 deploymentTarget = "cloudrun"
 
 [[ports]]
