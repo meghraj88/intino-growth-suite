@@ -84,8 +84,9 @@ export default function DashboardLayout({
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        // Check if Supabase is properly configured
-        if (!process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL === 'your_supabase_project_url_here') {
+        // Check if Supabase is properly configured (client-side only)
+        const supabaseUrl = typeof window !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_URL : '';
+        if (!supabaseUrl || supabaseUrl === 'your_supabase_project_url_here') {
           // Use mock authentication
           const mockUser = localStorage.getItem('mock_user')
           if (mockUser) {

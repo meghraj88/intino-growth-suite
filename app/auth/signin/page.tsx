@@ -1,6 +1,5 @@
 export const dynamic = "force-dynamic";
 
-
 "use client"
 
 import type React from "react"
@@ -34,8 +33,9 @@ export default function SignInPage() {
     }
 
     try {
-      // Check if Supabase is properly configured
-      if (!process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL === 'your_supabase_project_url_here') {
+      // Check if Supabase is properly configured (using window check for client-side)
+      const supabaseUrl = typeof window !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_URL : '';
+      if (!supabaseUrl || supabaseUrl === 'your_supabase_project_url_here') {
         // Mock authentication for development
         console.log("Using mock authentication - Supabase not configured")
         localStorage.setItem('mock_user', JSON.stringify({ email, id: 'mock-user-id' }))
