@@ -28,20 +28,22 @@ export default function DashboardProductsPage() {
   const [stores, setStores] = useState<any[]>([])
   const [storesLoaded, setStoresLoaded] = useState(false)
 
+  const fetchProducts = async () => {
+    const supabase = createClient()
+    const { data: productsData, error: productsError } = await supabase.from('products').select('*')
+    if (productsError) {
+      console.error("Error fetching products:", productsError)
+      setError("Failed to load products. Please try again later.")
+    } else {
+      setProducts(productsData as Product[])
+    }
+  }
+
   useEffect(() => {
     const fetchData = async () => {
-      const supabase = createClient()
-      
       // Fetch products
-      const { data: productsData, error: productsError } = await supabase.from('products').select('*')
-      
-      if (productsError) {
-        console.error("Error fetching products:", productsError)
-        setError("Failed to load products. Please try again later.")
-      } else {
-        setProducts(productsData as Product[])
-      }
-      
+      await fetchProducts()
+
       // Fetch stores
       try {
         const storesResponse = await fetch('/api/stores')
@@ -52,7 +54,7 @@ export default function DashboardProductsPage() {
       } catch (error) {
         console.error("Error fetching stores:", error)
       }
-      
+
       setLoading(false)
       setStoresLoaded(true)
     }
@@ -80,32 +82,32 @@ export default function DashboardProductsPage() {
     }
 
     setSyncLoading(true)
-    
+
     try {
       const store = stores[0] // Use first store
-      
-      if (!store.access_token || !store.store_domain) {
+
+      if (!store.store_domain) { // Access token is not needed here anymore
         toast({
           title: "Store not properly connected",
-          description: "Store credentials are missing. Please reconnect your store in Settings.",
+          description: "Shop domain is missing. Please reconnect your store in Settings.",
           variant: "destructive",
         })
         setSyncLoading(false)
         return
       }
 
-      const response = await fetch('/api/products/sync', {
+      const response = await fetch('/api/sync-products', { // Updated API endpoint
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ storeId: store.id }),
+        body: JSON.stringify({ storeId: store.id }), // Pass storeId
       })
 
       const data = await response.json()
 
       if (response.ok) {
-        if (data.syncedCount === 0) {
+        if (data.count === 0) { // Changed from data.syncedCount to data.count
           toast({
             title: "⚠️ No products found",
             description: `No products found in your Shopify store (${store.store_domain}).`,
@@ -114,15 +116,11 @@ export default function DashboardProductsPage() {
         } else {
           toast({
             title: "✅ Sync Successful!",
-            description: `${data.syncedCount} products successfully synced.`,
+            description: `${data.count} products successfully synced.`, // Changed from data.syncedCount to data.count
           })
-          
+
           // Refresh products after sync
-          const supabase = createClient()
-          const { data: updatedProducts, error } = await supabase.from('products').select('*')
-          if (!error) {
-            setProducts(updatedProducts as Product[])
-          }
+          await fetchProducts()
         }
       } else {
         toast({
