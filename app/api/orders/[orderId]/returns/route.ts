@@ -27,9 +27,9 @@ const calculateRefundRisk = (order: any, reason: string) => {
   return Math.min(Math.max(riskScore, 0), 1)
 }
 
-export async function POST(request: NextRequest, { params }: { params: Promise<{ orderId: string }> }) {
+export async function POST(request: NextRequest, { params }: { params: { orderId: string } }) {
   try {
-    const { orderId } = await params
+    const { orderId } = params
     const body = await request.json()
     const { reason } = body
 
