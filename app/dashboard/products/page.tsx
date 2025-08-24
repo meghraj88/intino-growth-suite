@@ -4,8 +4,10 @@ import { useEffect, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Package, Search, Filter, Plus, Download, Upload, Edit, Eye, Loader2 } from "lucide-react"
+import { Package, Search, Filter, Plus, Download, Upload, Edit, Eye, Loader2, RefreshCw } from "lucide-react"
 import { createClient } from "@/lib/supabase/client" // Using client-side Supabase
+import { toast } from "@/components/ui/use-toast"
+import { Toaster } from "@/components/ui/toaster"
 
 // Define a type for our product data for better code quality
 interface Product {
@@ -22,24 +24,124 @@ export default function DashboardProductsPage() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [syncLoading, setSyncLoading] = useState(false)
+  const [stores, setStores] = useState<any[]>([])
+  const [storesLoaded, setStoresLoaded] = useState(false)
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      // Use the client-side Supabase instance for components with "use client"
+    const fetchData = async () => {
       const supabase = createClient()
-      const { data, error } = await supabase.from('products').select('*')
-
-      if (error) {
-        console.error("Error fetching products:", error)
+      
+      // Fetch products
+      const { data: productsData, error: productsError } = await supabase.from('products').select('*')
+      
+      if (productsError) {
+        console.error("Error fetching products:", productsError)
         setError("Failed to load products. Please try again later.")
       } else {
-        setProducts(data as Product[])
+        setProducts(productsData as Product[])
       }
+      
+      // Fetch stores
+      try {
+        const storesResponse = await fetch('/api/stores')
+        const storesData = await storesResponse.json()
+        if (storesData.success) {
+          setStores(storesData.stores || [])
+        }
+      } catch (error) {
+        console.error("Error fetching stores:", error)
+      }
+      
       setLoading(false)
+      setStoresLoaded(true)
     }
 
-    fetchProducts()
+    fetchData()
   }, [])
+
+  const handleSyncProducts = async () => {
+    if (!storesLoaded) {
+      toast({
+        title: "Please wait",
+        description: "Stores are still loading...",
+        variant: "destructive",
+      })
+      return
+    }
+
+    if (stores.length === 0) {
+      toast({
+        title: "No store connected",
+        description: "Please connect your Shopify store in Settings first.",
+        variant: "destructive",
+      })
+      return
+    }
+
+    setSyncLoading(true)
+    
+    try {
+      const store = stores[0] // Use first store
+      
+      if (!store.access_token || !store.store_domain) {
+        toast({
+          title: "Store not properly connected",
+          description: "Store credentials are missing. Please reconnect your store in Settings.",
+          variant: "destructive",
+        })
+        setSyncLoading(false)
+        return
+      }
+
+      const response = await fetch('/api/products/sync', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ storeId: store.id }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        if (data.syncedCount === 0) {
+          toast({
+            title: "⚠️ No products found",
+            description: `No products found in your Shopify store (${store.store_domain}).`,
+            variant: "destructive",
+          })
+        } else {
+          toast({
+            title: "✅ Sync Successful!",
+            description: `${data.syncedCount} products successfully synced.`,
+          })
+          
+          // Refresh products after sync
+          const supabase = createClient()
+          const { data: updatedProducts, error } = await supabase.from('products').select('*')
+          if (!error) {
+            setProducts(updatedProducts as Product[])
+          }
+        }
+      } else {
+        toast({
+          title: "❌ Sync Failed",
+          description: data.error || "Error occurred during sync.",
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      console.error('Sync error:', error)
+      toast({
+        title: "❌ Sync Failed",
+        description: "Network error occurred during sync.",
+        variant: "destructive",
+      })
+    } finally {
+      setSyncLoading(false)
+    }
+  }
 
   return (
     <div className="space-y-8">
@@ -50,6 +152,14 @@ export default function DashboardProductsPage() {
           <p className="text-gray-600">Manage your product catalog and inventory</p>
         </div>
         <div className="flex items-center space-x-3">
+          <Button 
+            variant="outline" 
+            onClick={handleSyncProducts}
+            disabled={syncLoading}
+          >
+            <RefreshCw className={`w-4 h-4 mr-2 ${syncLoading ? 'animate-spin' : ''}`} />
+            {syncLoading ? 'Syncing...' : 'Sync Products'}
+          </Button>
           <Button variant="outline">
             <Upload className="w-4 h-4 mr-2" />
             Import
@@ -142,6 +252,7 @@ export default function DashboardProductsPage() {
           ))}
         </div>
       )}
+      <Toaster />
     </div>
   )
 }
