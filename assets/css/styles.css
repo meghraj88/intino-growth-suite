@@ -157,3 +157,15 @@ body {
   .footer-meta { text-align: center; }
 }
 
+/* Deals & Locations */
+.deals { background: #fff7ec; border-top: 1px solid rgba(0,0,0,.06); border-bottom: 1px solid rgba(0,0,0,.06); }
+.locations { padding: 40px 0; }
+.locations-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.location-card { background: #fff; border: 1px solid rgba(0,0,0,.06); border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); padding: 14px; }
+.location-card h3 { margin: 2px 0 6px; }
+.location-card .meta { margin: 0 0 6px; color: var(--bk-muted); font-size: 14px; }
+
+@media (max-width: 760px) {
+  .locations-grid { grid-template-columns: 1fr; }
+}
+

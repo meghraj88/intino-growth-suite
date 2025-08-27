@@ -8,6 +8,14 @@
     const open = menu.classList.toggle('open');
     toggle.setAttribute('aria-expanded', String(open));
   });
+  // Close on link click (mobile)
+  menu.addEventListener('click', function (e) {
+    const target = e.target;
+    if (target && target.tagName === 'A') {
+      menu.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
   document.addEventListener('click', function (e) {
     if (!menu.classList.contains('open')) return;
     const nav = document.querySelector('.site-nav');
